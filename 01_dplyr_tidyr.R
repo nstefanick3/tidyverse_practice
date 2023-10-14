@@ -258,7 +258,7 @@ table.long1
 #> select model, trans., hwy
 #> calculate avg. hwy for each model and trans
 #> this will be long table format
-df.long <- df %>% 
+df.long <- mpg %>% 
   filter(manufacturer %in% c("jeep", "land rover", "hyundai")) %>% 
   select(model, trans, hwy) %>% 
   group_by(model, trans) %>% 
@@ -306,7 +306,7 @@ table.sep <- table %>%
            mutate_at(.tbl = .,                       #which table
                      .vars = c("month", "day"),      #which variables
                      .funs = as.numeric) %>%         #which function is applied
-           arrange(year, month, dayofmonth)
+           arrange(year, month, day)
 
 table.sep
 str(table.sep)
@@ -326,7 +326,7 @@ table.unite <- table.sep %>%
   #add leading zeros
   #mutate(month = str_pad(month, width = 2, side = "left", pad = "0"),
   #       day   = str_pad(day  , width = 2, side = "left", pad = "0")) %>% 
-  mutate_at(.tbl = ., .vars = c("month", "day"), .funs = str_pad, 2, "left", "0") %>% 
+  mutate_at(.tbl = ., .vars = c("month", "day"), .funs = str_pad, 2, "left", "0") %>%  #turns numeric month and day into strings with 0s in front 
   unite(data = .,
         col = "date",
         year, month, day,
@@ -336,8 +336,149 @@ table.unite <- table.sep %>%
 table.unite
 
 
+#############################################################
+#session 2
+#############################################################
+rm(list = ls())
+
+library(hflights)
+hflights::hflights
+str(hflights)
 
 
+#dplyr and tidyr in action 
+#pull() extract a column as a vector
+df <- mpg
+
+#class() data type of object
+
+df %>% pull(hwy) %>% class()
+df %>% select(hwy) %>% class()
+
+# group_by() + mutate
+
+## calculate avg hwy per car manufacturer and car model
+df1 <- df %>% 
+  group_by(manufacturer, model) %>% 
+  mutate(mean_hwy = mean(hwy))
+
+df2 <- df %>% 
+  group_by(manufacturer, model) %>% 
+  mutate(mean_hwy = mean(hwy)) %>% 
+  ungroup() #ungroup get rid of the grouping attribute on the table
+
+#case when
+
+##add  variable called transmission type "automatic" or "manual"
+df %>%  count(trans)
+df <- df %>% 
+  mutate(trans_ = str_sub(string = trans, 
+                          start = 1, 
+                          end = 1)) %>% 
+  mutate(`transmission type` = case_when(trans_ == "a" ~ "automatic",
+                                         trans_ == "m" ~ "manual",
+                                         TRUE ~ "NA")
+         ) %>% 
+  select(-trans_)
+
+df %>% count(`transmission type`, trans)
+
+#row_number() - ranks
+
+## add a car rank / id not considering groups
+df <- df %>% 
+  mutate(`car id` = row_number())
+
+df
+##add car id // considering groups
+df <- df %>% 
+  group_by(manufacturer) %>% 
+  mutate(car_id_1 = row_number()) %>% 
+  ungroup()
+
+rm(list = ls())
+
+# transform flights data
+
+df <- hflights
+
+nrow(df);ncol(df)
+
+df %>% count(UniqueCarrier, FlightNum, TailNum, Year, Month, DayofMonth) #count grouped by the variables in count
+
+##how many columns begin with the word Taxi
+
+df %>% select(starts_with("Taxi"))
+
+## how many flights were flown with less than 1000 miles vs greater than or equal to 1000
+df %>% mutate(miles1000 = case_when(Distance < 1000 ~ "Less than 1000",
+                                    Distance >= 1000 ~ "Greater or equal to 1000",
+                                    TRUE ~ "NA")) %>% 
+  count(miles1000)
+
+## how many flights per carrier - sort by top to bottom
+df %>% group_by(UniqueCarrier) %>% 
+  count() %>% 
+  arrange(desc(n)) %>% 
+  ungroup()
+
+## number of cancelled flights per each carrier
+str(df)
+df %>% group_by(UniqueCarrier) %>% 
+  summarise(total_cancelled_flights = sum(Cancelled)) %>% 
+  ungroup() %>% 
+  arrange(desc(total_cancelled_flights))
+
+# or 
+df %>% 
+  filter(Cancelled == 1) %>% 
+  group_by(UniqueCarrier) %>% 
+  count() %>% 
+  ungroup() %>% 
+  arrange(desc(n))
+
+#now find the percentage of cancelled flights per carrier
+#sum(df$Cancelled)
+#percentage of flights cancelled against each other
+df %>% 
+  filter(Cancelled == 1) %>% 
+  group_by(UniqueCarrier) %>% 
+  count() %>% 
+  ungroup() %>% 
+  arrange(desc(n)) %>% 
+  mutate(percent_cancelled = n/sum(df$Cancelled))
+
+# percentage of flights cancelled against total flights
+str(df)
+df %>% group_by(UniqueCarrier) %>% 
+  summarise(total_cancelled_flights = sum(Cancelled),
+            total_flights = n(),
+            percent_cancelled = (sum(Cancelled)/n())*100) %>% 
+  ungroup() %>% 
+  arrange(desc(total_cancelled_flights)) %>% 
+  arrange(desc(percent_cancelled))
+
+# create column date by combining year month and day of month and remove those 3 columns
+df %>% mutate_at(., c("Year","Month","DayofMonth"), .funs = str_pad, 2, "left", "0") %>% 
+  unite("Date",Year:DayofMonth, sep= "-")
+
+# Count flights per cancelled codes (codes in columns)
+## and per carriers (in rows)
+
+df %>% select(UniqueCarrier, Cancelled, CancellationCode) %>% 
+  mutate(CancellationCode = str_replace(CancellationCode,"^$", "None")) %>%
+  #filter(CancellationCode != "") %>% 
+  #mutate_at('CancellationCode', ~na_if(.,'')) %>% 
+  pivot_wider(names_from = CancellationCode, values_from = Cancelled, values_fn = sum) ## bad, does not count nulls correct
+
+# Professors answer
+df %>% 
+  mutate(CancellationCode = case_when(CancellationCode == '' ~ '0',
+                                      TRUE ~ CancellationCode)) %>% 
+  group_by(UniqueCarrier, CancellationCode) %>% 
+  count() %>% 
+  ungroup() %>% 
+  pivot_wider(names_from = CancellationCode, values_from = n, values_fill = 0)
 
 
 
