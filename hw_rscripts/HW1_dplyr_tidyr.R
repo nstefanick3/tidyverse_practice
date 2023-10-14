@@ -153,6 +153,8 @@ norm_fl_mo_l <- hflights::hflights %>% group_by(UniqueCarrier, Month) %>%
 
 ggplot(norm_fl_mo_l, aes(x=Month, y=UniqueCarrier, fill=total_flights_norm)) +
   geom_tile()
+
+#newline
   
   
   
