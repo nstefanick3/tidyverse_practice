@@ -4,7 +4,7 @@ library(tidyverse)
 
 rm(list =ls())
 ## a. How many rows and columns are in table hfights?
-hflights <- hflights
+hflights <- hflights::hflights
 nrow(hflights); ncol(hflights)
 
 ## b. How many different carriers are listed in the table (print a table with distinct carrier names)?
@@ -14,6 +14,17 @@ hflights %>% count(UniqueCarrier) %>% nrow()
 ## c. Which and how many airports were involved? Consider both origin and destination airports!
 distinct(tibble(airports = c(hflights$Origin, hflights$Dest)))
 #probably a better way than this with pipes
+hflights %>% 
+  select(Origin,Dest) %>% 
+  distinct() %>% 
+  pivot_longer(
+    cols = everything(),
+    names_to = "orgig/dest",
+    values_to = "airport"
+  ) %>% 
+  distinct(airport) %>% 
+  arrange(airport)
+
 
 ## d. How many fights were cancelled?
 hflights %>% summarise(CancelledFlights = sum(Cancelled))
@@ -34,10 +45,10 @@ summary <- hflights %>%
   group_by(UniqueCarrier) %>% 
   summarise(num_flights = n(),
             total_distance_flown = sum(Distance),
-            total_time_elapsed = sum(ActualElapsedTime, na.rm = T),
+            total_time_elapsed = round((sum(ActualElapsedTime, na.rm = T)/60),1),
             total_air_time = sum(AirTime, na.rm = T),
             mean_distance_flown = mean(Distance),
-            mean_time_elapsed = mean(ActualElapsedTime, na.rm = T),
+            mean_time_elapsed = round((mean(ActualElapsedTime, na.rm = T)/60),1),
             mean_air_time = mean(AirTime, na.rm = T)
             )
 
