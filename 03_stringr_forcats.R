@@ -115,5 +115,8 @@ str_locate_all(fruit, "a")
 
 #trying to push to remote develop through r
 
+#now i fixed the connection between local develop and remote develop, lets
+#make changes and push to remote develop
+
 
 
