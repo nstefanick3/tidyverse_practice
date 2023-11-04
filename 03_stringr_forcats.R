@@ -470,9 +470,18 @@ countries.df %>%
   filter(num_words >3)
  
 
+## 3.13 Forcats 
+library(tidyverse)
 
+# Convert some parts of the mpg dataframe into factors
+mpg
+df <- mpg %>% 
+  mutate_at(.vars = c("manufacturer", "model", "trans", "class"), 
+            .funs = forcats::as_factor)
+df
 
-
+#check levels
+df$manufacturer %>% levels()
 
 
 
