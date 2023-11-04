@@ -484,6 +484,6 @@ df
 df$manufacturer %>% levels()
 
 
-
+#add check
 
 
