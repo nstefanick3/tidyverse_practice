@@ -259,7 +259,7 @@ str_glue("hi my name is {name}")
 mtcars
 str_glue_data(mtcars, "The car is {rownames(mtcars)}, hp: {hp}")
 
-str_view_all(c("mary had a little lamb", "banana"),"a")
+str_view_all(c("mary had a little lamb", "banana", "egg"),"a", match = T)
 
 # 3.7 other string helper functions
 #str_order()
@@ -483,7 +483,195 @@ df
 #check levels
 df$manufacturer %>% levels()
 
+#fct_count gives a 2 col tibble with the unique factor levels and counts 
+g <- df %>%  .$manufacturer %>%  fct_count()
+df %>%  count(manufacturer)
 
-#add check
+##visualize frequncies
+library(tidyverse)
+df %>% 
+  count(manufacturer) %>% 
+  ggplot(aes(x=manufacturer,
+             y=n)) +
+  geom_col()
+
+#fct_unique returns a factor vector of unique values
+g <- df %>% .$manufacturer %>% fct_unique()
+
+df$manufacturer %>% fct_infreq()
+
+#Combine factors and order their levels 
+
+# fct_c()
+
+##split cars into 2 data frames
+manuf <- df %>% .$manufacturer %>%  fct_unique() %>% as.character()
+
+df1 <- df %>% 
+  filter(manufacturer %in% manuf[1:8])
+
+df2 <- df %>% 
+  filter(manufacturer %in% manuf[9:15])
+
+##extract only factor vector
+f1 <- df1 %>% pull(manufacturer)
+f2 <- df2 %>% pull(manufacturer)
+f1
+f2
+
+#combine factors 
+c(f1,f2) # there will be issues here if the levels did not already match up
+
+#to preserve levels 
+fct_c(f1,f2) # this function is smart enough to merge the levels 
+
+#fct_relevel
+## lets randomly shuffle levels 
+set.seed(478)
+manuf.random <- sample(manuf, size = length(manuf), replace = F)
+manuf.random
+## now count frequencies and create another bar plot with manually reordered levels 
+df %>% mutate(manufacturer = fct_relevel(manufacturer, manuf.random)) %>% 
+  count(manufacturer) %>% 
+  ggplot(aes(x = manufacturer, y= n)) +
+  geom_col()
+
+#fct_infreq() order in the descending level of frequency
+df %>% 
+  mutate(manufacturer = fct_infreq(manufacturer)) %>% 
+  count(manufacturer) %>% 
+  ggplot(aes(x=manufacturer, y=n)) + 
+  geom_col()
+
+#fct_inorder()
+df %>% 
+  mutate(manufacturer = fct_infreq(manufacturer)) %>% 
+  mutate(manufacturer = fct_inorder(manufacturer)) %>% 
+  count(manufacturer) #%>%
+  # ggplot(aes(x=manufacturer, y=n)) + 
+  # geom_col()
+  # 
+
+#fct_reverse()
+df %>% 
+  mutate(manufacturer = fct_infreq(manufacturer)) %>% 
+  mutate(manufacturer = fct_rev(manufacturer)) %>% 
+  count(manufacturer) %>%
+  ggplot(aes(x=manufacturer, y=n)) +
+  geom_col()
+
+
+# 3.15 factors change levels values and add / drop levels
+
+#fct_recode()
+
+## first lets pull levels and add country of origin
+df %>% pull(manufacturer) %>% fct_count()
+
+levels.country <- tribble(
+  ~company, ~country,
+   "audi",          "Germany",
+   "chevrolet",     "USA",
+   "dodge",         "USA",
+   "ford",          "USA",
+   "honda",         "Japan",
+   "hyundai",       "South Korea",
+   "jeep",          "USA",
+   "land rover",    "England",
+   "lincoln",       "USA",
+   "mercury",       "USA",
+   "nissan",        "Japan",
+   "pontiac",       "USA",
+   "subaru",        "Japan",
+   "toyota",        "Japan",
+   "volkswagen",    "Germany",
+)
+levels.country
+
+##prepare pairs for recoding
+j <- levels.country %>% 
+  mutate(recode = str_c(country, " = ", "'", company, "'", sep = "")) %>% 
+  pull(recode) %>% 
+  str_c(., collapse = ", ")
+
+##recoding...
+df.recode <- df %>% 
+  mutate(manufacturer = fct_recode(manufacturer, 
+                                   Germany = 'audi', 
+                                   USA = 'chevrolet', 
+                                   USA = 'dodge', 
+                                   USA = 'ford', 
+                                   Japan = 'honda', 
+                                   `South Korea` = 'hyundai', 
+                                   USA = 'jeep', 
+                                   England = 'land rover', 
+                                   USA = 'lincoln', 
+                                   USA = 'mercury', 
+                                   Japan = 'nissan', 
+                                   USA = 'pontiac', 
+                                   Japan = 'subaru', 
+                                   Japan = 'toyota', 
+                                   Germany = 'volkswagen'))
+
+df.recode %>% 
+  count(manufacturer)
+
+# fct_collapse()
+
+## let's keep only USA companies, others are collapsed
+non.us.mans <- levels.country %>% 
+  filter(country != "USA") %>% 
+  pull(company)
+
+df.collapse <- df %>% 
+  mutate(manufacturer = fct_collapse(manufacturer, `non us` = non.us.mans))
+df.collapse
+
+df.collapse %>% 
+  count(manufacturer)
+
+#df %>% mutate(manufacturer = case_when(manufacturer !%in%))
+
+df %>% mutate(manufacturer = case_when(manufacturer %in% non.us.mans ~ "non us",
+                                       TRUE ~ manufacturer)) #this keeps changes the column to a charachter type again
+
+# fct_other()
+
+## all non US companies -> Other
+df.other <- df %>% 
+  mutate(manufacturer = fct_other(manufacturer, drop = non.us.mans))
+df.other
+
+df.other %>% count(manufacturer)
+
+#fct_drop()
+##drop other level
+## - first filter our rows with "Other"
+df.drop <- df.other %>% 
+  filter(manufacturer != "Other")
+
+## check levels - "Others still present"
+df.drop %>% pull(manufacturer) %>% fct_unique()
+
+##now drop levels 
+df.drop <- df.drop %>% mutate(manufacturer = fct_drop(manufacturer))
+df.drop %>% pull(manufacturer) %>% fct_unique()
+
+#fct_expand()
+
+## lets add some additional manufacturers 
+df.expand <- df %>% 
+  mutate(manufacturer = fct_expand(manufacturer, c("Ferrari", "Lamborghini")))
+df.expand %>% pull(manufacturer) %>% fct_unique()
+df.expand %>% pull(manufacturer) %>% levels()
+
+# at this momend we dont have any cars from ferrari or lamborghini, 
+#we are just perparing the levels
+
+ 
+
+
+
+
 
 
