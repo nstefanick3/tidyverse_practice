@@ -69,3 +69,4 @@ yr1to3000 %>%
   summarise(`ct per century` = n()) %>% print(n = 30)
 
 # all centuries do not have the same number of leap years, every 4th century has 25 while the rest have 24
+
