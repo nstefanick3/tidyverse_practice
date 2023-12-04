@@ -70,3 +70,58 @@ yr1to3000 %>%
 
 # all centuries do not have the same number of leap years, every 4th century has 25 while the rest have 24
 
+## Exercise 3
+
+# Store all holidays in a tribble
+
+us.holidays <- tribble( ~holiday,                        ~date,
+                        "New Year’s Day",                "2021-01-01",
+                        "Martin Luther King, Jr. Day",   "2021-01-18",
+                        "President’s Day",               "2021-02-15",
+                        "Memorial Day",                  "2021-05-31",
+                        "Independence Day",              "2021-07-04",
+                        "Independence Day (observed)",   "2021-07-05",
+                        "Labor Day",                     "2021-09-06",
+                        "Columbus Day",                  "2021-10-11",
+                        "Veterans Day",                  "2021-11-11",
+                        "Thanksgiving Day",              "2021-11-25",
+                        "Christmas Day (observed)",      "2021-12-24",
+                        "Christmas Day",                 "2021-12-25",
+                        "New Year’s Day (observed)",     "2021-12-31") %>% 
+  mutate(date = ymd(date))
+
+# how many days weeks hours seconds between holidays
+us.holidays %>% mutate(priordate = lag(date)) %>% 
+  mutate(days = as.double(date-priordate),
+         weeks = days/7,
+         hours = days*24,
+         seconds = hours*60*60)
+
+# Is today a holiday
+today() %in% (us.holidays %>% pull(date))
+
+# Which holiday was the last one
+td <- ymd("2021-06-01") - (us.holidays %>% pull(date))
+min(td[td>0])
+latest_holiday_index <- which(td==min(td[td>0]))
+(us.holidays %>% pull(holiday))[latest_holiday_index]
+
+# Which holiday will be the next one
+td <- ymd("2021-06-01") - (us.holidays %>% pull(date))
+max(td[td<0])
+next_holiday_index <- which(td==max(td[td<0]))
+(us.holidays %>% pull(holiday))[next_holiday_index]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
