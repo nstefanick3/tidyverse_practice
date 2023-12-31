@@ -100,11 +100,18 @@ us.holidays %>% mutate(priordate = lag(date)) %>%
 # Is today a holiday
 today() %in% (us.holidays %>% pull(date))
 
+#data prep
+us.holidays <- us.holidays %>% 
+  mutate(today = ymd("2021-06-26"),
+         diff_today = as.period(date - today))
+
 # Which holiday was the last one
 td <- ymd("2021-06-01") - (us.holidays %>% pull(date))
 min(td[td>0])
 latest_holiday_index <- which(td==min(td[td>0]))
 (us.holidays %>% pull(holiday))[latest_holiday_index]
+#markos answer
+us.holidays %>% filter(diff_today < 0) %>% arrange(diff_today) %>% select(holiday,date,diff_today) %>% tail(1)
 
 # Which holiday will be the next one
 td <- ymd("2021-06-01") - (us.holidays %>% pull(date))
@@ -113,8 +120,54 @@ next_holiday_index <- which(td==max(td[td<0]))
 (us.holidays %>% pull(holiday))[next_holiday_index]
 
 
+# Exercise 4 
+
+#  import the .csv
+pjm <- read_csv("./data/energy_consumption/pjm_hourly_est.csv")
+
+#  keep only columns Datetime and PJME
+#  do not forget column parsing!
+#  remove rows where PJME data is missing!
+#  sort rows based on date time column
+pjm %>% select(Datetime, PJME) %>% 
+  drop_na(PJME)
+
+#  check if data is for every hour in given time span?
+difftime("2002-12-31 01:00:00", "2018-01-02 00:00:00", units = "hours")
+#markos answer
+pjm %>% mutate(diff_h = as.period(Datetime-lag(Datetime))/hours(1)) %>% filter(diff_h != 1)
+###its not?
+
+#  now add columns: date, month, year 
+pjm <- pjm %>% 
+  mutate(Datetime = ymd_hms(Datetime),
+         econs = as.numeric(PJME)) %>% 
+  select(Datetime, econs) %>% 
+  drop_na(econs) %>% 
+  mutate(day = day(Datetime),
+         month = month(Datetime),
+         year = year(Datetime)) %>% 
+  arrange(Datetime)
+#  calculate time intervals: year intervals, month intervals, day intervals
+#  HINT: per year / month / day calculate minimum and maximum time stamp
+#  HINT: calculate intervals using lubridate
+
+###year consumption
+pjm %>% select(Datetime, year, econs) %>% 
+  group_by(year) %>% 
+  #create interval
+  mutate(int_start = min(Datetime),
+         int_end = max(Datetime),
+         int = int_start %--% int_end) %>% 
+  ungroup() %>% 
+  #caluculate averages
+  group_by(year, int) %>% 
+  summarize(econs_tot = sum(econs, na.rm = T),
+            econs_avg = mean(econs, na.rm = T))
 
 
+#  now use your intervals and calculate total and mean hourly energy consumption per each
+# year / each month / each day
 
 
 
