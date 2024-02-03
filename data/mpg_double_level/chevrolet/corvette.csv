@@ -1,0 +1,6 @@
+manufacturer,model,displ,year,cyl,trans,drv,cty,hwy,fl,class
+chevrolet,corvette,5.7,1999,8,manual(m6),r,16,26,p,2seater
+chevrolet,corvette,5.7,1999,8,auto(l4),r,15,23,p,2seater
+chevrolet,corvette,6.2,2008,8,manual(m6),r,16,26,p,2seater
+chevrolet,corvette,6.2,2008,8,auto(s6),r,15,25,p,2seater
+chevrolet,corvette,7,2008,8,manual(m6),r,15,24,p,2seater

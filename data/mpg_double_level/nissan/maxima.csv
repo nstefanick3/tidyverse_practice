@@ -1,0 +1,4 @@
+manufacturer,model,displ,year,cyl,trans,drv,cty,hwy,fl,class
+nissan,maxima,3,1999,6,auto(l4),f,18,26,r,midsize
+nissan,maxima,3,1999,6,manual(m5),f,19,25,r,midsize
+nissan,maxima,3.5,2008,6,auto(av),f,19,25,p,midsize

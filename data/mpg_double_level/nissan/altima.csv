@@ -1,0 +1,7 @@
+manufacturer,model,displ,year,cyl,trans,drv,cty,hwy,fl,class
+nissan,altima,2.4,1999,4,manual(m5),f,21,29,r,compact
+nissan,altima,2.4,1999,4,auto(l4),f,19,27,r,compact
+nissan,altima,2.5,2008,4,auto(av),f,23,31,r,midsize
+nissan,altima,2.5,2008,4,manual(m6),f,23,32,r,midsize
+nissan,altima,3.5,2008,6,manual(m6),f,19,27,p,midsize
+nissan,altima,3.5,2008,6,auto(av),f,19,26,p,midsize

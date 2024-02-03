@@ -1,0 +1,7 @@
+manufacturer,model,displ,year,cyl,trans,drv,cty,hwy,fl,class
+volkswagen,new beetle,1.9,1999,4,manual(m5),f,35,44,d,subcompact
+volkswagen,new beetle,1.9,1999,4,auto(l4),f,29,41,d,subcompact
+volkswagen,new beetle,2,1999,4,manual(m5),f,21,29,r,subcompact
+volkswagen,new beetle,2,1999,4,auto(l4),f,19,26,r,subcompact
+volkswagen,new beetle,2.5,2008,5,manual(m5),f,20,28,r,subcompact
+volkswagen,new beetle,2.5,2008,5,auto(s6),f,20,29,r,subcompact

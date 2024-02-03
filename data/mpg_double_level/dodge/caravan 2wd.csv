@@ -1,0 +1,12 @@
+manufacturer,model,displ,year,cyl,trans,drv,cty,hwy,fl,class
+dodge,caravan 2wd,2.4,1999,4,auto(l3),f,18,24,r,minivan
+dodge,caravan 2wd,3,1999,6,auto(l4),f,17,24,r,minivan
+dodge,caravan 2wd,3.3,1999,6,auto(l4),f,16,22,r,minivan
+dodge,caravan 2wd,3.3,1999,6,auto(l4),f,16,22,r,minivan
+dodge,caravan 2wd,3.3,2008,6,auto(l4),f,17,24,r,minivan
+dodge,caravan 2wd,3.3,2008,6,auto(l4),f,17,24,r,minivan
+dodge,caravan 2wd,3.3,2008,6,auto(l4),f,11,17,e,minivan
+dodge,caravan 2wd,3.8,1999,6,auto(l4),f,15,22,r,minivan
+dodge,caravan 2wd,3.8,1999,6,auto(l4),f,15,21,r,minivan
+dodge,caravan 2wd,3.8,2008,6,auto(l6),f,16,23,r,minivan
+dodge,caravan 2wd,4,2008,6,auto(l6),f,16,23,r,minivan

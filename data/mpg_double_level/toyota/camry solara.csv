@@ -1,0 +1,8 @@
+manufacturer,model,displ,year,cyl,trans,drv,cty,hwy,fl,class
+toyota,camry solara,2.2,1999,4,auto(l4),f,21,27,r,compact
+toyota,camry solara,2.2,1999,4,manual(m5),f,21,29,r,compact
+toyota,camry solara,2.4,2008,4,manual(m5),f,21,31,r,compact
+toyota,camry solara,2.4,2008,4,auto(s5),f,22,31,r,compact
+toyota,camry solara,3,1999,6,auto(l4),f,18,26,r,compact
+toyota,camry solara,3,1999,6,manual(m5),f,18,26,r,compact
+toyota,camry solara,3.3,2008,6,auto(s5),f,18,27,r,compact

@@ -1,0 +1,5 @@
+manufacturer,model,displ,year,cyl,trans,drv,cty,hwy,fl,class
+nissan,pathfinder 4wd,3.3,1999,6,auto(l4),4,14,17,r,suv
+nissan,pathfinder 4wd,3.3,1999,6,manual(m5),4,15,17,r,suv
+nissan,pathfinder 4wd,4,2008,6,auto(l5),4,14,20,p,suv
+nissan,pathfinder 4wd,5.6,2008,8,auto(s5),4,12,18,p,suv

@@ -1,0 +1,6 @@
+manufacturer,model,displ,year,cyl,trans,drv,cty,hwy,fl,class
+chevrolet,malibu,2.4,1999,4,auto(l4),f,19,27,r,midsize
+chevrolet,malibu,2.4,2008,4,auto(l4),f,22,30,r,midsize
+chevrolet,malibu,3.1,1999,6,auto(l4),f,18,26,r,midsize
+chevrolet,malibu,3.5,2008,6,auto(l4),f,18,29,r,midsize
+chevrolet,malibu,3.6,2008,6,auto(s6),f,17,26,r,midsize

@@ -1,0 +1,10 @@
+manufacturer,model,displ,year,cyl,trans,drv,cty,hwy,fl,class
+ford,mustang,3.8,1999,6,manual(m5),r,18,26,r,subcompact
+ford,mustang,3.8,1999,6,auto(l4),r,18,25,r,subcompact
+ford,mustang,4,2008,6,manual(m5),r,17,26,r,subcompact
+ford,mustang,4,2008,6,auto(l5),r,16,24,r,subcompact
+ford,mustang,4.6,1999,8,auto(l4),r,15,21,r,subcompact
+ford,mustang,4.6,1999,8,manual(m5),r,15,22,r,subcompact
+ford,mustang,4.6,2008,8,manual(m5),r,15,23,r,subcompact
+ford,mustang,4.6,2008,8,auto(l5),r,15,22,r,subcompact
+ford,mustang,5.4,2008,8,manual(m6),r,14,20,p,subcompact

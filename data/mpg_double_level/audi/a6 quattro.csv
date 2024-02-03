@@ -1,0 +1,4 @@
+manufacturer,model,displ,year,cyl,trans,drv,cty,hwy,fl,class
+audi,a6 quattro,2.8,1999,6,auto(l5),4,15,24,p,midsize
+audi,a6 quattro,3.1,2008,6,auto(s6),4,17,25,p,midsize
+audi,a6 quattro,4.2,2008,8,auto(s6),4,16,23,p,midsize

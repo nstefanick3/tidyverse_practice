@@ -1,0 +1,7 @@
+manufacturer,model,displ,year,cyl,trans,drv,cty,hwy,fl,class
+ford,explorer 4wd,4,1999,6,auto(l5),4,14,17,r,suv
+ford,explorer 4wd,4,1999,6,manual(m5),4,15,19,r,suv
+ford,explorer 4wd,4,1999,6,auto(l5),4,14,17,r,suv
+ford,explorer 4wd,4,2008,6,auto(l5),4,13,19,r,suv
+ford,explorer 4wd,4.6,2008,8,auto(l6),4,13,19,r,suv
+ford,explorer 4wd,5,1999,8,auto(l4),4,13,17,r,suv

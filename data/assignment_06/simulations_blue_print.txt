@@ -1,0 +1,15 @@
+rnorm;n=10;mean=0;sd=3
+rnorm;n=100;mean=0;sd=3
+rnorm;n=1000;mean=0;sd=3
+rnorm;n=10000;mean=0;sd=3
+rnorm;n=100000;mean=0;sd=3
+runif;n=10;min=0;max=10
+runif;n=100;min=0;max=10
+runif;n=1000;min=0;max=10
+runif;n=10000;min=0;max=10
+runif;n=100000;min=0;max=10
+rexp;n=10;rate=2;
+rexp;n=100;rate=2;
+rexp;n=1000;rate=2;
+rexp;n=10000;rate=2;
+rexp;n=100000;rate=2;
