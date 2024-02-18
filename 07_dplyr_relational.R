@@ -209,3 +209,5 @@ df %>%
 ## rank flights
 df <- df %>% 
   mutate(`rank flight` = dense_rank(distance))
+
+#test
